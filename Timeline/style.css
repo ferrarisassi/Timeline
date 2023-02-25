@@ -1,0 +1,147 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
+body {
+  background-color: #f2f2f2;
+}
+
+/* Timeline styles */
+.timeline-container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 50px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  margin: 0px;
+  position: relative;
+  margin-bottom: 40px;
+
+  /* add animation rules */
+  animation-name: fade-in;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.timeline-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #9b59b6;
+  color: #fff;
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.timeline-content h2 {
+  font-size: 24px;
+  margin: 0 0 10px;
+}
+
+.timeline-content p {
+  margin: 0 0 10px;
+}
+
+.timeline-item:nth-child(even) .timeline-icon {
+  background-color: #1abc9c;
+}
+
+.timeline-item:nth-child(odd) .timeline-icon {
+  background-color: #f1c40f;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 2px;
+  width: 0px;
+  background-color: #bdc3c7;
+}
+
+.timeline-item:first-child::before {
+  display: none;
+}
+
+.timeline-item:last-child::before {
+  height: 50%;
+}
+
+.timeline-line {
+  width: 8%;
+  height: 2px;
+  background-color: #bdc3c7;
+  position: relative;
+  top: 50px;
+}
+
+@media screen and (max-width: 767px) {
+  .timeline-item {
+    width: 100%;
+  }
+}
+
+/* Add event form styles */
+.add-event-container {
+  margin: 50px;
+  padding: 20px;
+  border: 1px solid #bdc3c7;
+}
+
+.add-event-container h2 {
+  margin: 0 0 10px;
+}
+
+.add-event-container label {
+  display: block;
+  margin: 10px 0;
+}
+
+.add-event-container input,
+.add-event-container textarea {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #bdc3c7;
+  border-radius: 3px;
+}
+
+.add-event-container button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #9b59b6;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.add-event-container button:hover {
+  background-color: #8e44ad;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
