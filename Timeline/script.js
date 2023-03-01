@@ -1,5 +1,8 @@
 const timelineContainer = document.getElementById("timeline-container");
 const addEventForm = document.getElementById("add-event-form");
+const scriptPath = document.currentScript.src; // get the path of the script
+const scriptFolder = scriptPath.substring(0, scriptPath.lastIndexOf('/')); // extract the folder path
+const jsonFilePath = `${scriptFolder}/timeline.json`; // create path for JSON file
 
 // Load events from local storage and render them
 let events = JSON.parse(localStorage.getItem("events")) || [];
@@ -13,10 +16,12 @@ addEventForm.addEventListener("submit", (e) => {
   const name = document.getElementById("event-name").value;
   const description = document.getElementById("event-description").value;
   const date = document.getElementById("event-date").value;
+  const link = document.getElementById("event-link").value;
   const event = {
     name,
     description,
     date,
+    link,
   };
 
   // Add event to events array
@@ -64,6 +69,10 @@ function renderTimeline() {
     const dateString = event.date + "T03:00:00-03:00"; // Append Sao Paulo timezone offset to date string
     eventDate.innerText = formatDate(dateString);
 
+    const eventLink = document.createElement("a");
+    eventLink.href = event.link;
+    eventLink.innerText = "View event";
+
     const removeButton = document.createElement("button");
     removeButton.innerText = "Remove Event";
     removeButton.addEventListener("click", () => {
@@ -73,6 +82,18 @@ function renderTimeline() {
       // Save events to local storage
       localStorage.setItem("events", JSON.stringify(events));
 
+      // Save events to JSON file
+      const data = JSON.stringify(events, null, 2);
+      const blob = new Blob([data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "timeline.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
       // Render timeline
       renderTimeline();
     });
@@ -80,6 +101,9 @@ function renderTimeline() {
     timelineContent.appendChild(eventName);
     timelineContent.appendChild(eventDescription);
     timelineContent.appendChild(eventDate);
+    if (event.link) {
+      timelineContent.appendChild(eventLink);
+    }
     timelineContent.appendChild(removeButton);
 
     timelineItem.appendChild(timelineIcon);
@@ -94,6 +118,17 @@ function renderTimeline() {
       timelineContainer.insertBefore(timelineLine, timelineItem.nextSibling);
     }
   });
+  // Save events to JSON file
+  const data = JSON.stringify(events, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "timeline.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 // Format date as "Day Month Year"
@@ -102,3 +137,21 @@ function formatDate(dateString) {
   const options = { day: "numeric", month: "long", year: "numeric" };
   return date.toLocaleDateString("pt-BR", options);
 }
+
+const downloadLink = document.getElementById("download-link");
+downloadLink.addEventListener("click", () => {
+  const data = JSON.stringify(events, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "timeline.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  // Save events to JSON file
+  const fileWriter = new FileWriter(jsonFilePath);
+  fileWriter.write(data);
+  fileWriter.close();
+});
