@@ -23,7 +23,11 @@
         <input type="text" id="event-link">
         <button type="submit">Add Event</button>
       </form>
-      <button type="button" id="download-link">Download Timeline</button>
+        <button id="load-local-storage">Load from Local Storage</button>
+        <label for="load-from-file">Load from file:</label>
+        <p align="center">Adding the file will update the page and the local storage!</p>
+        <input id="load-from-file" type="file" accept=".json">
+        <button type="button" id="download-link">Download Timeline</button>
     </div>
     <script src="script.js"></script>
   </body>

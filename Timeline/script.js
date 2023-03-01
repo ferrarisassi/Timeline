@@ -1,12 +1,43 @@
 const timelineContainer = document.getElementById("timeline-container");
 const addEventForm = document.getElementById("add-event-form");
-const scriptPath = document.currentScript.src; // get the path of the script
-const scriptFolder = scriptPath.substring(0, scriptPath.lastIndexOf('/')); // extract the folder path
-const jsonFilePath = `${scriptFolder}/timeline.json`; // create path for JSON file
 
 // Load events from local storage and render them
-let events = JSON.parse(localStorage.getItem("events")) || [];
-renderTimeline();
+let events = [];
+
+// Load events from local storage and render them
+//if (localStorage.getItem("events")) {
+//  events = JSON.parse(localStorage.getItem("events"));
+//  renderTimeline();
+//} else {
+//  // Load events from JSON file and render them
+//  fetch("timeline.json")
+//    .then((response) => response.json())
+//    .then((data) => {
+//      events = data;
+//      renderTimeline();
+//    });
+//}
+
+const loadFromLocalStorageButton = document.getElementById("load-local-storage");
+loadFromLocalStorageButton.addEventListener("click", () => {
+  // Load events from local storage
+  events = JSON.parse(localStorage.getItem("events")) || [];
+  renderTimeline();
+});
+
+const loadFromFileButton = document.getElementById("load-from-file");
+loadFromFileButton.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.addEventListener("load", () => {
+    events = JSON.parse(reader.result);
+    localStorage.setItem("events", JSON.stringify(events));
+    renderTimeline();
+  });
+
+  reader.readAsText(file);
+});
 
 // Handle form submission
 addEventForm.addEventListener("submit", (e) => {
@@ -34,6 +65,7 @@ addEventForm.addEventListener("submit", (e) => {
   document.getElementById("event-name").value = "";
   document.getElementById("event-description").value = "";
   document.getElementById("event-date").value = "";
+  document.getElementById("event-link").value = "";
 
   // Render timeline
   renderTimeline();
@@ -82,18 +114,6 @@ function renderTimeline() {
       // Save events to local storage
       localStorage.setItem("events", JSON.stringify(events));
 
-      // Save events to JSON file
-      const data = JSON.stringify(events, null, 2);
-      const blob = new Blob([data], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "timeline.json";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
       // Render timeline
       renderTimeline();
     });
@@ -118,17 +138,6 @@ function renderTimeline() {
       timelineContainer.insertBefore(timelineLine, timelineItem.nextSibling);
     }
   });
-  // Save events to JSON file
-  const data = JSON.stringify(events, null, 2);
-  const blob = new Blob([data], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "timeline.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }
 
 // Format date as "Day Month Year"
@@ -150,7 +159,12 @@ downloadLink.addEventListener("click", () => {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  // Save events to JSON file
+
+  /// Save events to JSON file
+  const scriptPath = window.location.pathname;
+  const scriptFolder = scriptPath.substring(0, scriptPath.lastIndexOf("/") + 1);
+  const jsonFilePath = scriptFolder + "timeline.json";
+  
   const fileWriter = new FileWriter(jsonFilePath);
   fileWriter.write(data);
   fileWriter.close();

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Pygmalion's Spectacles",
+    "description": "In 1935 Stanley G Weinbaum fictional story Pygmalion Spectcles intorduced readers to the ideia that a device can allow you to escape reality into a simulated enviroment.",
+    "date": "1935-01-01",
+    "link": "https://youtu.be/UW8NapTA9oc?t=50"
+  },
+  {
+    "name": "Sensorama",
+    "description": "In 1957 Morton Heilig invents the sensorama, a seated viewfinder experience that allowed you to be in the film by blocking outside visuals, emitting smells, fans to add the sense of touch and a vibrating chair for a haptic feedback.",
+    "date": "1957-01-01",
+    "link": "https://youtu.be/UW8NapTA9oc?t=112"
+  },
+  {
+    "name": "Headsight - First HMD",
+    "description": "In Philco Corporation created the Headsight, for the first time displays were mounted to a wearable device. Created for the military so soldiers could remote view experiences of hazardous materials.",
+    "date": "1961-01-01",
+    "link": "https://youtu.be/UW8NapTA9oc?t=136"
+  }
+]
